@@ -1,6 +1,12 @@
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import {
+    Image,
+    SafeAreaView,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { images } from "../constants/images";
 
 export default function OnboardingScreen() {
@@ -61,7 +67,7 @@ export default function OnboardingScreen() {
           <TouchableOpacity
             className="w-full bg-lingua-purple rounded-3xl flex-row items-center justify-center py-4 px-6"
             activeOpacity={0.8}
-            onPress={() => router.push("/")}
+            onPress={() => router.push("/sign-up")}
           >
             <View className="flex-1 items-center pl-6">
               <Text className="text-h4 text-white font-semibold">
