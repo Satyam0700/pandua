@@ -10,14 +10,22 @@ import {
   Modal,
   ScrollView,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { images } from "../constants/images";
+import { useSignUp, useSSO } from "@clerk/expo";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function SignUpScreen() {
   const router = useRouter();
+  const { signUp } = useSignUp();
+  const { startSSOFlow } = useSSO();
 
   // Form State
   const [email, setEmail] = useState("");
@@ -25,11 +33,12 @@ export default function SignUpScreen() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Verification Modal State
   const [modalVisible, setModalVisible] = useState(false);
   const [code, setCode] = useState("");
-  const [codeFocused, setCodeFocused] = useState(false);
+  const [codeError, setCodeError] = useState("");
 
   const codeInputRef = useRef<TextInput>(null);
 
@@ -41,6 +50,7 @@ export default function SignUpScreen() {
       }, 300);
     } else {
       setCode("");
+      setCodeError("");
     }
   }, [modalVisible]);
 
@@ -69,21 +79,123 @@ export default function SignUpScreen() {
     return isValid;
   };
 
-  const handleSignUp = () => {
-    if (validateForm()) {
-      setModalVisible(true);
+  const handleClerkError = (err: any) => {
+    const errors = err?.errors || (err?.message ? [err] : null);
+    if (errors) {
+      errors.forEach((e: any) => {
+        const message = e.message;
+        const field = e.meta?.paramName || "";
+        if (field.includes("email")) {
+          setEmailError(message);
+        } else if (field.includes("password")) {
+          setPasswordError(message);
+        } else if (e.code === "form_identifier_exists") {
+          setEmailError(message);
+        } else if (e.code === "form_password_validation_failed") {
+          setPasswordError(message);
+        } else {
+          alert(message);
+        }
+      });
+    } else {
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
-  const handleCodeChange = (text: string) => {
-    // Only allow numbers
+  const handleSignUp = async () => {
+    if (!validateForm()) return;
+    if (!signUp) return;
+
+    setIsSubmitting(true);
+    try {
+      const { error: createError } = await signUp.create({
+        emailAddress: email,
+        password: password,
+      });
+
+      if (createError) {
+        handleClerkError(createError);
+        return;
+      }
+
+      const { error: sendError } = await signUp.verifications.sendEmailCode();
+      if (sendError) {
+        handleClerkError(sendError);
+        return;
+      }
+
+      setModalVisible(true);
+    } catch (err: any) {
+      console.error(err);
+      alert("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCodeChange = async (text: string) => {
     const cleanText = text.replace(/[^0-9]/g, "");
     setCode(cleanText);
+    setCodeError("");
 
     if (cleanText.length === 6) {
-      // Auto-submit code and navigate to home
-      setModalVisible(false);
-      router.replace("/");
+      try {
+        const { error: verifyError } = await signUp.verifications.verifyEmailCode({
+          code: cleanText,
+        });
+
+        if (verifyError) {
+          setCodeError(verifyError.message || "Invalid verification code");
+          return;
+        }
+
+        if (signUp.status === "complete") {
+          const { error: finalizeError } = await signUp.finalize();
+          if (finalizeError) {
+            setCodeError(finalizeError.message || "Sign up finalize failed");
+          } else {
+            setModalVisible(false);
+          }
+        } else {
+          setCodeError("Sign up was not completed. Please try again.");
+        }
+      } catch (err: any) {
+        console.error(err);
+        setCodeError("Verification failed. Please try again.");
+      }
+    }
+  };
+
+  const handleResendCode = async () => {
+    try {
+      setCode("");
+      setCodeError("");
+      const { error: sendError } = await signUp.verifications.sendEmailCode();
+      if (sendError) {
+        setCodeError(sendError.message || "Failed to resend code");
+      } else {
+        alert("Verification code resent successfully!");
+      }
+    } catch (err: any) {
+      setCodeError("Failed to resend code");
+    }
+  };
+
+  const handleSocialSignUp = async (
+    strategy: "oauth_google" | "oauth_facebook" | "oauth_apple"
+  ) => {
+    try {
+      const { createdSessionId, setActive: setSessionActive } = await startSSOFlow({
+        strategy,
+        redirectUrl: Linking.createURL("/"),
+      });
+
+      if (createdSessionId && setSessionActive) {
+        await setSessionActive({ session: createdSessionId });
+      }
+    } catch (err: any) {
+      console.error("SSO Error:", err);
+      alert(err.errors?.[0]?.message || "Social sign up failed. Please try again.");
     }
   };
 
@@ -204,10 +316,15 @@ export default function SignUpScreen() {
             {/* Primary Sign Up CTA Button */}
             <TouchableOpacity
               onPress={handleSignUp}
+              disabled={isSubmitting}
               className="w-full bg-lingua-purple h-14 rounded-2xl items-center justify-center mt-6 shadow-sm shadow-lingua-purple/20 active:opacity-90"
               activeOpacity={0.8}
             >
-              <Text className="text-white text-h4 font-semibold">Sign Up</Text>
+              {isSubmitting ? (
+                <ActivityIndicator size="small" color="#FFFFFF" />
+              ) : (
+                <Text className="text-white text-h4 font-semibold">Sign Up</Text>
+              )}
             </TouchableOpacity>
 
             {/* "or continue with" Divider */}
@@ -223,6 +340,7 @@ export default function SignUpScreen() {
             <View className="gap-3">
               {/* Google Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignUp("oauth_google")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -240,6 +358,7 @@ export default function SignUpScreen() {
 
               {/* Facebook Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignUp("oauth_facebook")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -257,6 +376,7 @@ export default function SignUpScreen() {
 
               {/* Apple Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignUp("oauth_apple")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -377,12 +497,18 @@ export default function SignUpScreen() {
                 })}
               </Pressable>
 
+              {codeError ? (
+                <Text className="text-error text-body-sm text-center mb-4">
+                  {codeError}
+                </Text>
+              ) : null}
+
               {/* Resend and Helper Text */}
               <View className="flex-row justify-center items-center mt-2">
                 <Text className="text-slate-400 text-body-sm">
                   Didn't receive the code?{" "}
                 </Text>
-                <TouchableOpacity onPress={() => setCode("")}>
+                <TouchableOpacity onPress={handleResendCode}>
                   <Text className="text-lingua-purple font-semibold text-body-sm">
                     Resend Code
                   </Text>
