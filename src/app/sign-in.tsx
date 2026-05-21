@@ -10,23 +10,32 @@ import {
   Modal,
   ScrollView,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import { images } from "../constants/images";
+import { useSignIn, useSSO } from "@clerk/expo";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function SignInScreen() {
   const router = useRouter();
+  const { signIn } = useSignIn();
+  const { startSSOFlow } = useSSO();
 
   // Form State
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Verification Modal State
   const [modalVisible, setModalVisible] = useState(false);
   const [code, setCode] = useState("");
-  const [codeFocused, setCodeFocused] = useState(false);
+  const [codeError, setCodeError] = useState("");
 
   const codeInputRef = useRef<TextInput>(null);
 
@@ -38,6 +47,7 @@ export default function SignInScreen() {
       }, 300);
     } else {
       setCode("");
+      setCodeError("");
     }
   }, [modalVisible]);
 
@@ -57,21 +67,128 @@ export default function SignInScreen() {
     return isValid;
   };
 
-  const handleSignIn = () => {
-    if (validateForm()) {
-      setModalVisible(true);
+  const handleClerkError = (err: any) => {
+    const errors = err?.errors || (err?.message ? [err] : null);
+    if (errors) {
+      errors.forEach((e: any) => {
+        const message = e.message;
+        const field = e.meta?.paramName || "";
+        if (field.includes("identifier") || field.includes("email")) {
+          setEmailError(message);
+        } else if (e.code === "form_identifier_not_found") {
+          setEmailError("No account found with this email. Please sign up.");
+        } else {
+          alert(message);
+        }
+      });
+    } else {
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
-  const handleCodeChange = (text: string) => {
-    // Only allow numbers
+  const handleSignIn = async () => {
+    if (!validateForm()) return;
+    if (!signIn) return;
+
+    setIsSubmitting(true);
+    try {
+      // Start the sign-in flow
+      const { error: createError } = await signIn.create({
+        identifier: email,
+      });
+
+      if (createError) {
+        handleClerkError(createError);
+        return;
+      }
+
+      // Send the verification code to the email address
+      const { error: sendError } = await signIn.emailCode.sendCode({
+        emailAddress: email,
+      });
+
+      if (sendError) {
+        handleClerkError(sendError);
+        return;
+      }
+
+      // Show code modal
+      setModalVisible(true);
+    } catch (err: any) {
+      console.error("Sign-in error:", err);
+      alert("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCodeChange = async (text: string) => {
     const cleanText = text.replace(/[^0-9]/g, "");
     setCode(cleanText);
+    setCodeError("");
 
     if (cleanText.length === 6) {
-      // Auto-submit code and navigate to home
-      setModalVisible(false);
-      router.replace("/");
+      try {
+        const { error: verifyError } = await signIn.emailCode.verifyCode({
+          code: cleanText,
+        });
+
+        if (verifyError) {
+          setCodeError(verifyError.message || "Invalid verification code");
+          return;
+        }
+
+        if (signIn.status === "complete") {
+          const { error: finalizeError } = await signIn.finalize();
+          if (finalizeError) {
+            setCodeError(finalizeError.message || "Sign in finalize failed");
+          } else {
+            setModalVisible(false);
+          }
+        } else {
+          setCodeError("Sign-in was not completed. Please try again.");
+        }
+      } catch (err: any) {
+        console.error("Code verification error:", err);
+        setCodeError("Verification failed. Please try again.");
+      }
+    }
+  };
+
+  const handleResendCode = async () => {
+    try {
+      setCode("");
+      setCodeError("");
+
+      const { error: sendError } = await signIn.emailCode.sendCode({
+        emailAddress: email,
+      });
+
+      if (sendError) {
+        setCodeError(sendError.message || "Failed to resend code");
+      } else {
+        alert("Verification code resent successfully!");
+      }
+    } catch (err: any) {
+      setCodeError("Failed to resend code");
+    }
+  };
+
+  const handleSocialSignIn = async (
+    strategy: "oauth_google" | "oauth_facebook" | "oauth_apple"
+  ) => {
+    try {
+      const { createdSessionId, setActive: setSessionActive } = await startSSOFlow({
+        strategy,
+        redirectUrl: Linking.createURL("/"),
+      });
+
+      if (createdSessionId && setSessionActive) {
+        await setSessionActive({ session: createdSessionId });
+      }
+    } catch (err: any) {
+      console.error("SSO Error:", err);
+      alert(err.errors?.[0]?.message || "Social sign in failed. Please try again.");
     }
   };
 
@@ -151,10 +268,15 @@ export default function SignInScreen() {
             {/* Primary Sign In CTA Button */}
             <TouchableOpacity
               onPress={handleSignIn}
+              disabled={isSubmitting}
               className="w-full bg-lingua-purple h-14 rounded-2xl items-center justify-center mt-6 shadow-sm shadow-lingua-purple/20 active:opacity-90"
               activeOpacity={0.8}
             >
-              <Text className="text-white text-h4 font-semibold">Sign In</Text>
+              {isSubmitting ? (
+                <ActivityIndicator size="small" color="#FFFFFF" />
+              ) : (
+                <Text className="text-white text-h4 font-semibold">Sign In</Text>
+              )}
             </TouchableOpacity>
 
             {/* "or continue with" Divider */}
@@ -170,6 +292,7 @@ export default function SignInScreen() {
             <View className="gap-3">
               {/* Google Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignIn("oauth_google")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -187,6 +310,7 @@ export default function SignInScreen() {
 
               {/* Facebook Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignIn("oauth_facebook")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -204,6 +328,7 @@ export default function SignInScreen() {
 
               {/* Apple Button */}
               <TouchableOpacity
+                onPress={() => handleSocialSignIn("oauth_apple")}
                 className="w-full h-14 bg-white border border-slate-200 rounded-2xl flex-row items-center px-6 active:bg-slate-50"
                 activeOpacity={0.8}
               >
@@ -324,12 +449,18 @@ export default function SignInScreen() {
                 })}
               </Pressable>
 
+              {codeError ? (
+                <Text className="text-error text-body-sm text-center mb-4">
+                  {codeError}
+                </Text>
+              ) : null}
+
               {/* Resend and Helper Text */}
               <View className="flex-row justify-center items-center mt-2">
                 <Text className="text-slate-400 text-body-sm">
                   Didn't receive the code?{" "}
                 </Text>
-                <TouchableOpacity onPress={() => setCode("")}>
+                <TouchableOpacity onPress={handleResendCode}>
                   <Text className="text-lingua-purple font-semibold text-body-sm">
                     Resend Code
                   </Text>

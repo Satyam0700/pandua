@@ -1,8 +1,14 @@
 import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+import { useAuth } from "@clerk/expo";
 
 export default function Index() {
   const router = useRouter();
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -23,6 +29,13 @@ export default function Index() {
           onPress={() => router.push("/onboarding")}
         >
           <Text className="text-white text-h4">Open Onboarding</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="bg-error/10 border border-error py-3 px-8 rounded-2xl active:opacity-80 mt-4"
+          onPress={handleLogout}
+        >
+          <Text className="text-error text-h4 font-semibold">Log Out</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
