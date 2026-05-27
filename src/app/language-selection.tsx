@@ -14,10 +14,12 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useLanguageStore } from "../store/languageStore";
 
 export default function LanguageSelection() {
   const router = useRouter();
-  const [selectedLanguageCode, setSelectedLanguageCode] = useState<string | null>(null);
+  const { selectedLanguageCode: savedLanguageCode, setSelectedLanguageCode: saveLanguageToStore } = useLanguageStore();
+  const [selectedLanguageCode, setSelectedLanguageCode] = useState<string | null>(savedLanguageCode);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredLanguages = useMemo(() => {
@@ -74,12 +76,16 @@ export default function LanguageSelection() {
       <View className="flex-1">
         {/* ---- Header ---- */}
         <View className="flex-row items-center px-6 pt-4 pb-4">
-          <TouchableOpacity
-            className="w-10 h-10 items-center justify-center"
-            onPress={() => router.back()}
-          >
-            <SymbolView name="chevron.left" size={24} tintColor="#0D132B" />
-          </TouchableOpacity>
+          {savedLanguageCode ? (
+            <TouchableOpacity
+              className="w-10 h-10 items-center justify-center"
+              onPress={() => router.back()}
+            >
+              <SymbolView name="chevron.left" size={24} tintColor="#0D132B" />
+            </TouchableOpacity>
+          ) : (
+            <View className="w-10 h-10" />
+          )}
           <Text className="flex-1 text-h3 text-text-primary text-center mr-10">
             Choose a language
           </Text>
@@ -130,8 +136,8 @@ export default function LanguageSelection() {
               className="bg-lingua-purple py-4 rounded-3xl items-center"
               activeOpacity={0.8}
               onPress={() => {
-                // TODO: save language to Zustand store
-                router.push("/onboarding");
+                saveLanguageToStore(selectedLanguageCode);
+                router.replace("/");
               }}
             >
               <Text className="text-white text-h4 font-semibold">Continue</Text>
