@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/expo";
 import { tokenCache } from "../lib/tokenCache";
 import { View, ActivityIndicator } from "react-native";
+import { useLanguageStore } from "../store/languageStore";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -25,26 +26,41 @@ function InitialLayout() {
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  const { selectedLanguageCode, hasHydrated } = useLanguageStore();
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !hasHydrated) return;
+
+    const currentSegment = segments[0];
 
     // Check if current route is in the auth/onboarding group
     const inAuthGroup =
-      segments[0] === "sign-in" ||
-      segments[0] === "sign-up" ||
-      segments[0] === "onboarding";
+      currentSegment === "sign-in" ||
+      currentSegment === "sign-up" ||
+      currentSegment === "onboarding";
 
-    if (!isSignedIn && !inAuthGroup) {
-      // Redirect to onboarding if not signed in and trying to access a protected route
-      router.replace("/onboarding");
-    } else if (isSignedIn && inAuthGroup) {
-      // Redirect to home if signed in and trying to access auth/onboarding screens
-      router.replace("/");
+    if (!isSignedIn) {
+      if (!inAuthGroup) {
+        // Redirect to onboarding if not signed in and trying to access a protected route
+        router.replace("/onboarding");
+      }
+    } else {
+      // Authenticated user
+      if (!selectedLanguageCode) {
+        // If an authenticated user has no selected language, route them to the language selection screen
+        if (currentSegment !== "language-selection") {
+          router.replace("/language-selection");
+        }
+      } else {
+        // If language is selected, they should not access auth/onboarding screens
+        if (inAuthGroup) {
+          router.replace("/");
+        }
+      }
     }
-  }, [isLoaded, isSignedIn, segments]);
+  }, [isLoaded, hasHydrated, isSignedIn, selectedLanguageCode, segments, router]);
 
-  if (!isLoaded) {
+  if (!isLoaded || !hasHydrated) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#FFFFFF" }}>
         <ActivityIndicator size="large" color="#7C3AED" />
