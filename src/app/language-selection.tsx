@@ -137,7 +137,7 @@ export default function LanguageSelection() {
               activeOpacity={0.8}
               onPress={() => {
                 saveLanguageToStore(selectedLanguageCode);
-                router.replace("/");
+                router.replace("/" as any);
               }}
             >
               <Text className="text-white text-h4 font-semibold">Continue</Text>

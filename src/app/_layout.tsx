@@ -54,7 +54,7 @@ function InitialLayout() {
       } else {
         // If language is selected, they should not access auth/onboarding screens
         if (inAuthGroup) {
-          router.replace("/");
+          router.replace("/" as any);
         }
       }
     }
