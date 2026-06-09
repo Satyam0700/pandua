@@ -8,11 +8,14 @@ import { getLanguageByCode } from "../../data/languages";
 import { getLessonsByUnit } from "../../data/lessons";
 import { getUnitsByLanguage } from "../../data/units";
 import { useLanguageStore } from "../../store/languageStore";
+import { useProgressStore } from "../../store/progressStore";
+import type { Lesson } from "../../types/learning";
 
 export default function HomeTabScreen() {
   const router = useRouter();
   const { user } = useUser();
   const { selectedLanguageCode } = useLanguageStore();
+  const { completedLessonIds, xp, streak } = useProgressStore();
 
   const activeLanguage = selectedLanguageCode
     ? getLanguageByCode(selectedLanguageCode)
@@ -22,15 +25,20 @@ export default function HomeTabScreen() {
     ? getUnitsByLanguage(selectedLanguageCode)
     : [];
 
-  const currentUnit = units[0];
-  const currentLessons = currentUnit ? getLessonsByUnit(currentUnit.id) : [];
-  const nextLesson = currentLessons[0];
+  // Find next lesson to study
+  const allLessons: Lesson[] = [];
+  units.forEach((unit) => {
+    allLessons.push(...getLessonsByUnit(unit.id));
+  });
 
-  // Mock XP progress
-  const currentXP = 15;
-  const dailyGoalXP = 20;
-  const xpProgress = currentXP / dailyGoalXP;
-  const streakCount = 12;
+  const nextLesson = allLessons.find(l => !completedLessonIds.includes(l.id)) || allLessons[allLessons.length - 1];
+  const currentUnit = nextLesson ? units.find(u => u.id === nextLesson.unitId) : units[0];
+
+  // XP progress
+  const currentXP = xp;
+  const dailyGoalXP = 50;
+  const xpProgress = Math.min(currentXP / dailyGoalXP, 1);
+  const streakCount = streak;
 
   const firstName = user?.firstName || "Learner";
 
@@ -93,7 +101,7 @@ export default function HomeTabScreen() {
               </View>
             )}
             <Text className="text-h3 text-text-primary">
-              {getGreeting()}, {firstName}! 👋
+              {`${getGreeting()}, ${firstName}! 👋`}
             </Text>
           </View>
 
@@ -128,7 +136,7 @@ export default function HomeTabScreen() {
               <View className="flex-row items-baseline mt-1">
                 <Text className="text-h1 text-text-primary">{currentXP}</Text>
                 <Text className="text-body-lg text-text-secondary">
-                  {" "}/ {dailyGoalXP} XP
+                  {` / ${dailyGoalXP} XP`}
                 </Text>
               </View>
               {/* Progress Bar */}
@@ -160,7 +168,7 @@ export default function HomeTabScreen() {
                   {activeLanguage.name}
                 </Text>
                 <Text className="font-poppins text-[14px] text-white/80 mt-[2px]">
-                  A1 • {currentUnit ? currentUnit.title : "Unit 1"}
+                  {`A1 • ${currentUnit ? currentUnit.title : "Unit 1"}`}
                 </Text>
                 <TouchableOpacity
                   className="bg-white rounded-[20px] px-6 py-[10px] self-start mt-[14px]"

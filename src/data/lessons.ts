@@ -1,13 +1,5 @@
 import type { Lesson } from "@/types/learning";
 
-// ---------------------------------------------------------------------------
-// Lessons
-// ---------------------------------------------------------------------------
-// Beginner-friendly sample lessons for each supported language.
-// Each lesson has activities, vocabulary, phrases, goals, and an optional
-// AI teacher prompt for future audio-based Vision Agent lessons.
-// ---------------------------------------------------------------------------
-
 export const lessons: Lesson[] = [
   // ══════════════════════════════════════════════════════════════════════════
   // SPANISH
@@ -93,6 +85,35 @@ export const lessons: Lesson[] = [
     },
   },
 
+  // ── es-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "es-numbers",
+    unitId: "es-basics-1",
+    languageCode: "es",
+    title: "Numbers 1-10",
+    description: "Learn to count to ten in Spanish.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "es-v-n1", word: "Uno", translation: "One", pronunciation: "OO-noh" },
+      { id: "es-v-n2", word: "Dos", translation: "Two", pronunciation: "dohs" },
+      { id: "es-v-n3", word: "Tres", translation: "Three", pronunciation: "trehs" },
+      { id: "es-v-n4", word: "Cuatro", translation: "Four", pronunciation: "KWAH-troh" },
+      { id: "es-v-n5", word: "Cinco", translation: "Five", pronunciation: "SEEN-coh" },
+    ],
+    phrases: [
+      { id: "es-p-n1", phrase: "Tengo un hermano", translation: "I have one brother", pronunciation: "TEN-goh oon ehr-MAH-noh" },
+    ],
+    activities: [
+      { id: "es-a-n1", type: "multipleChoice", instruction: "Translate 'Uno'", question: "Uno", correctAnswer: "One", options: ["One", "Two", "Three", "Four"], xp: 5 },
+    ],
+    goals: [
+      { id: "es-g-n1", description: "Count up to 5" },
+    ],
+  },
+
   // ── es-food-basics ─────────────────────────────────────────────────────
   {
     id: "es-food-basics",
@@ -125,12 +146,60 @@ export const lessons: Lesson[] = [
       { id: "es-g5", description: "Learn 5 food and drink words" },
       { id: "es-g6", description: "Practice ordering food" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are María. Role-play a café scene where the student orders food and drinks in Spanish. Keep it fun and encouraging.",
-      greeting: "¡Bienvenido al café! Welcome to the café! Let's learn to order food and drinks.",
-      focusTopics: ["food vocabulary", "ordering", "polite requests"],
-      targetLanguage: "es",
-    },
+  },
+
+  // ── es-at-cafe ─────────────────────────────────────────────────────────
+  {
+    id: "es-at-cafe",
+    unitId: "es-food-1",
+    languageCode: "es",
+    title: "At the Café",
+    description: "Order coffee and pastries like a local.",
+    icon: "☕",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "es-v-c1", word: "Té", translation: "Tea", pronunciation: "teh" },
+      { id: "es-v-c2", word: "Azúcar", translation: "Sugar", pronunciation: "ah-SOO-car" },
+      { id: "es-v-c3", word: "Pastel", translation: "Cake", pronunciation: "pahs-TEL" },
+    ],
+    phrases: [
+      { id: "es-p-c1", phrase: "Un café con leche", translation: "A coffee with milk", pronunciation: "oon kah-FEH con LEH-cheh" },
+    ],
+    activities: [
+      { id: "es-a-c1", type: "multipleChoice", instruction: "Translate 'Té'", question: "Té", correctAnswer: "Tea", options: ["Tea", "Coffee", "Milk"], xp: 5 },
+    ],
+    goals: [
+      { id: "es-g-c1", description: "Order coffee with milk" },
+    ],
+  },
+
+  // ── es-restaurant ──────────────────────────────────────────────────────
+  {
+    id: "es-restaurant",
+    unitId: "es-food-1",
+    languageCode: "es",
+    title: "At the Restaurant",
+    description: "Request a table and order dishes.",
+    icon: "🍝",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 25,
+    vocabulary: [
+      { id: "es-v-r1", word: "Mesa", translation: "Table", pronunciation: "MEH-sah" },
+      { id: "es-v-r2", word: "Menú", translation: "Menu", pronunciation: "meh-NOO" },
+      { id: "es-v-r3", word: "Comida", translation: "Food / Meal", pronunciation: "coh-MEE-dah" },
+    ],
+    phrases: [
+      { id: "es-p-r1", phrase: "Una mesa para dos", translation: "A table for two", pronunciation: "OO-nah MEH-sah PAH-rah dohs" },
+    ],
+    activities: [
+      { id: "es-a-r1", type: "multipleChoice", instruction: "Translate 'Mesa'", question: "Mesa", correctAnswer: "Table", options: ["Table", "Chair", "Menu"], xp: 5 },
+    ],
+    goals: [
+      { id: "es-g-r1", description: "Ask for a table" },
+    ],
   },
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -167,14 +236,7 @@ export const lessons: Lesson[] = [
     ],
     goals: [
       { id: "fr-g1", description: "Learn 5 French greetings" },
-      { id: "fr-g2", description: "Complete all activities" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Pierre, a cheerful French teacher. Teach basic greetings. Speak slowly and clearly.",
-      greeting: "Bonjour! I'm Pierre. Let's learn to greet people in French!",
-      focusTopics: ["greetings", "politeness", "pronunciation"],
-      targetLanguage: "fr",
-    },
   },
 
   // ── fr-introductions ──────────────────────────────────────────────────
@@ -205,12 +267,35 @@ export const lessons: Lesson[] = [
     goals: [
       { id: "fr-g3", description: "Introduce yourself in French" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Pierre. Practice introductions — ask the student their name and where they are from. Use simple French.",
-      greeting: "Bonjour encore! Today we'll practice introducing ourselves. Comment tu t'appelles?",
-      focusTopics: ["introductions", "names", "countries"],
-      targetLanguage: "fr",
-    },
+  },
+
+  // ── fr-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "fr-numbers",
+    unitId: "fr-basics-1",
+    languageCode: "fr",
+    title: "Numbers 1-10",
+    description: "Learn to count in French.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "fr-v-n1", word: "Un", translation: "One", pronunciation: "uhn" },
+      { id: "fr-v-n2", word: "Deux", translation: "Two", pronunciation: "duh" },
+      { id: "fr-v-n3", word: "Trois", translation: "Three", pronunciation: "trwah" },
+      { id: "fr-v-n4", word: "Quatre", translation: "Four", pronunciation: "katr" },
+      { id: "fr-v-n5", word: "Cinq", translation: "Five", pronunciation: "sank" },
+    ],
+    phrases: [
+      { id: "fr-p-n1", phrase: "J'ai trois chats", translation: "I have three cats", pronunciation: "zhay trwah shah" },
+    ],
+    activities: [
+      { id: "fr-a-n1", type: "multipleChoice", instruction: "Translate 'Deux'", question: "Deux", correctAnswer: "Two", options: ["One", "Two", "Three"], xp: 5 },
+    ],
+    goals: [
+      { id: "fr-g-n1", description: "Learn numbers 1 to 5" },
+    ],
   },
 
   // ── fr-travel-basics ──────────────────────────────────────────────────
@@ -236,75 +321,78 @@ export const lessons: Lesson[] = [
     ],
     activities: [
       { id: "fr-a8", type: "multipleChoice", instruction: "Choose the correct translation", question: "What is 'La gare'?", correctAnswer: "The train station", options: ["The hotel", "The train station", "The airport", "The taxi"], xp: 5 },
-      { id: "fr-a9", type: "fillInTheBlank", instruction: "Complete the question", question: "Où est _____? (Where is the airport?)", correctAnswer: "l'aéroport", xp: 5 },
-      { id: "fr-a10", type: "translate", instruction: "Translate to French", question: "The hotel", correctAnswer: "L'hôtel", xp: 5 },
     ],
     goals: [
       { id: "fr-g4", description: "Learn 4 travel words" },
-      { id: "fr-g5", description: "Ask for directions" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Pierre. Role-play a travel scenario — the student just arrived in Paris and needs directions. Keep it simple and fun.",
-      greeting: "Bienvenue à Paris! Welcome to Paris! Let's learn some travel phrases.",
-      focusTopics: ["travel", "directions", "hotels"],
-      targetLanguage: "fr",
-    },
   },
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // HINDI
-  // ══════════════════════════════════════════════════════════════════════════
-
+  // ── fr-at-cafe ─────────────────────────────────────────────────────────
   {
-    id: "hi-greetings",
-    unitId: "hi-basics-1",
-    languageCode: "hi",
-    title: "Greetings",
-    description: "Basic Hindi greetings and polite words.",
-    icon: "🙏",
+    id: "fr-at-cafe",
+    unitId: "fr-travel-1",
+    languageCode: "fr",
+    title: "At the Café",
+    description: "Order coffee and croissants like a Parisienne.",
+    icon: "☕",
     difficulty: "beginner",
     estimatedMinutes: 5,
     xpReward: 20,
     vocabulary: [
-      { id: "hi-v1", word: "नमस्ते", translation: "Hello / Greetings", pronunciation: "nuh-MUS-tay" },
-      { id: "hi-v2", word: "धन्यवाद", translation: "Thank you", pronunciation: "dhun-yuh-VAHD" },
-      { id: "hi-v3", word: "हाँ", translation: "Yes", pronunciation: "haan" },
-      { id: "hi-v4", word: "नहीं", translation: "No", pronunciation: "nuh-HEEN" },
-      { id: "hi-v5", word: "कृपया", translation: "Please", pronunciation: "KRIP-yah" },
+      { id: "fr-v-c1", word: "Le café", translation: "The coffee", pronunciation: "luh kah-fay" },
+      { id: "fr-v-c2", word: "Le croissant", translation: "The croissant", pronunciation: "luh krwa-sahn" },
+      { id: "fr-v-c3", word: "L'addition", translation: "The bill / check", pronunciation: "lah-dee-syohn" },
     ],
     phrases: [
-      { id: "hi-p1", phrase: "आप कैसे हैं?", translation: "How are you? (formal)", pronunciation: "aap KAI-say HAIN", context: "Formal greeting" },
-      { id: "hi-p2", phrase: "मेरा नाम... है", translation: "My name is...", pronunciation: "MEH-rah naam ... hai", context: "Self-introduction" },
+      { id: "fr-p-c1", phrase: "Un café s'il vous plaît", translation: "A coffee please", pronunciation: "uhn kah-fay seel voo play" },
     ],
     activities: [
-      { id: "hi-a1", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'नमस्ते' mean?", correctAnswer: "Hello / Greetings", options: ["Hello / Greetings", "Goodbye", "Thank you", "Sorry"], xp: 5 },
-      { id: "hi-a2", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'धन्यवाद' mean?", correctAnswer: "Thank you", options: ["Please", "Yes", "Thank you", "No"], xp: 5 },
-      { id: "hi-a3", type: "fillInTheBlank", instruction: "Complete the phrase", question: "आप _____ हैं? (How are you?)", correctAnswer: "कैसे", xp: 5 },
-      { id: "hi-a4", type: "translate", instruction: "Translate to Hindi", question: "Please", correctAnswer: "कृपया", xp: 5 },
+      { id: "fr-a-c1", type: "multipleChoice", instruction: "Translate 'Croissant'", question: "Croissant", correctAnswer: "Croissant", options: ["Croissant", "Coffee", "Tea"], xp: 5 },
     ],
     goals: [
-      { id: "hi-g1", description: "Learn 5 Hindi greetings" },
-      { id: "hi-g2", description: "Complete all activities" },
+      { id: "fr-g-c1", description: "Order coffee at a French cafe" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Priya, a warm Hindi teacher. Teach Namaste culture, basic greetings, and polite expressions. Use transliteration to help with pronunciation.",
-      greeting: "नमस्ते! I'm Priya. Let's learn to greet people in Hindi!",
-      focusTopics: ["greetings", "politeness", "Devanagari basics"],
-      targetLanguage: "hi",
-    },
+  },
+
+  // ── fr-directions ──────────────────────────────────────────────────────
+  {
+    id: "fr-directions",
+    unitId: "fr-travel-1",
+    languageCode: "fr",
+    title: "Asking Directions",
+    description: "Navigate around French cities.",
+    icon: "🗺️",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 20,
+    vocabulary: [
+      { id: "fr-v-d1", word: "À gauche", translation: "On the left", pronunciation: "ah gohsh" },
+      { id: "fr-v-d2", word: "À droite", translation: "On the right", pronunciation: "ah drwaht" },
+      { id: "fr-v-d3", word: "Tout droit", translation: "Straight ahead", pronunciation: "too drwah" },
+    ],
+    phrases: [
+      { id: "fr-p-d1", phrase: "Tournez à gauche", translation: "Turn left", pronunciation: "toor-nay ah gohsh" },
+    ],
+    activities: [
+      { id: "fr-a-d1", type: "multipleChoice", instruction: "Translate 'À gauche'", question: "À gauche", correctAnswer: "On the left", options: ["On the left", "On the right", "Straight ahead"], xp: 5 },
+    ],
+    goals: [
+      { id: "fr-g-d1", description: "Learn directional words" },
+    ],
   },
 
   // ══════════════════════════════════════════════════════════════════════════
   // JAPANESE
   // ══════════════════════════════════════════════════════════════════════════
 
+  // ── ja-greetings ───────────────────────────────────────────────────────
   {
     id: "ja-greetings",
     unitId: "ja-basics-1",
     languageCode: "ja",
     title: "Greetings",
     description: "Essential Japanese greetings.",
-    icon: "⛩️",
+    icon: "👋",
     difficulty: "beginner",
     estimatedMinutes: 5,
     xpReward: 20,
@@ -321,33 +409,161 @@ export const lessons: Lesson[] = [
     ],
     activities: [
       { id: "ja-a1", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'こんにちは' mean?", correctAnswer: "Hello", options: ["Hello", "Goodbye", "Thank you", "Sorry"], xp: 5 },
-      { id: "ja-a2", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'ありがとう' mean?", correctAnswer: "Thank you", options: ["Hello", "Please", "Thank you", "Yes"], xp: 5 },
-      { id: "ja-a3", type: "fillInTheBlank", instruction: "Complete the phrase", question: "お元気_____か？ (How are you?)", correctAnswer: "です", xp: 5 },
-      { id: "ja-a4", type: "translate", instruction: "Translate to Japanese", question: "Goodbye", correctAnswer: "さようなら", xp: 5 },
     ],
     goals: [
       { id: "ja-g1", description: "Learn 5 Japanese greetings" },
-      { id: "ja-g2", description: "Complete all activities" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Yuki, a patient Japanese teacher. Teach basic greetings with correct politeness levels. Help with pronunciation.",
-      greeting: "こんにちは! I'm Yuki. Let's learn Japanese greetings together!",
-      focusTopics: ["greetings", "politeness levels", "pronunciation"],
-      targetLanguage: "ja",
-    },
+  },
+
+  // ── ja-introductions ───────────────────────────────────────────────────
+  {
+    id: "ja-introductions",
+    unitId: "ja-basics-1",
+    languageCode: "ja",
+    title: "Introductions",
+    description: "Introduce yourself in Japanese.",
+    icon: "🤝",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ja-v6", word: "わたし", translation: "I / Me", pronunciation: "wah-tah-shee" },
+      { id: "ja-v7", word: "なまえ", translation: "Name", pronunciation: "nah-mah-eh" },
+      { id: "ja-v8", word: "ともだち", translation: "Friend", pronunciation: "toh-moh-dah-chee" },
+    ],
+    phrases: [
+      { id: "ja-p3", phrase: "名前は何ですか？", translation: "What is your name?", pronunciation: "nah-mah-eh wah nan des kah" },
+    ],
+    activities: [
+      { id: "ja-a2", type: "multipleChoice", instruction: "Translate 'わたし'", question: "わたし", correctAnswer: "I / Me", options: ["I / Me", "Friend", "Teacher"], xp: 5 },
+    ],
+    goals: [
+      { id: "ja-g2", description: "Say your name" },
+    ],
+  },
+
+  // ── ja-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "ja-numbers",
+    unitId: "ja-basics-1",
+    languageCode: "ja",
+    title: "Numbers 1-10",
+    description: "Learn to count in Japanese.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ja-v-n1", word: "いち", translation: "One", pronunciation: "ee-chee" },
+      { id: "ja-v-n2", word: "に", translation: "Two", pronunciation: "nee" },
+      { id: "ja-v-n3", word: "さん", translation: "Three", pronunciation: "sahn" },
+      { id: "ja-v-n4", word: "よん", translation: "Four", pronunciation: "yohn" },
+      { id: "ja-v-n5", word: "ご", translation: "Five", pronunciation: "goh" },
+    ],
+    phrases: [
+      { id: "ja-p-n1", phrase: "りんごが三個あります", translation: "There are three apples", pronunciation: "rin-goh gah san-koh ah-ri-mas" },
+    ],
+    activities: [
+      { id: "ja-a-n1", type: "multipleChoice", instruction: "Translate 'さん'", question: "さん", correctAnswer: "Three", options: ["One", "Three", "Five"], xp: 5 },
+    ],
+    goals: [
+      { id: "ja-g-n1", description: "Count 1 to 5" },
+    ],
+  },
+
+  // ── ja-food-basics ─────────────────────────────────────────────────────
+  {
+    id: "ja-food-basics",
+    unitId: "ja-food-1",
+    languageCode: "ja",
+    title: "Food Basics",
+    description: "Common foods and beverages in Japan.",
+    icon: "🍽️",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ja-v-f1", word: "みず", translation: "Water", pronunciation: "mee-zoo" },
+      { id: "ja-v-f2", word: "ごはん", translation: "Rice / Meal", pronunciation: "goh-hahn" },
+      { id: "ja-v-f3", word: "おちゃ", translation: "Green tea", pronunciation: "oh-chah" },
+    ],
+    phrases: [
+      { id: "ja-p-f1", phrase: "お茶をください", translation: "Green tea please", pronunciation: "oh-chah oh koo-dah-sy-ee" },
+    ],
+    activities: [
+      { id: "ja-a-f1", type: "multipleChoice", instruction: "Translate 'みず'", question: "みず", correctAnswer: "Water", options: ["Water", "Rice", "Tea"], xp: 5 },
+    ],
+    goals: [
+      { id: "ja-g-f1", description: "Learn 3 food words" },
+    ],
+  },
+
+  // ── ja-at-cafe ─────────────────────────────────────────────────────────
+  {
+    id: "ja-at-cafe",
+    unitId: "ja-food-1",
+    languageCode: "ja",
+    title: "At the Café",
+    description: "Order drinks and cakes in Japanese.",
+    icon: "☕",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ja-v-c1", word: "コーヒー", translation: "Coffee", pronunciation: "koh-hee" },
+      { id: "ja-v-c2", word: "ケーキ", translation: "Cake", pronunciation: "keh-kee" },
+      { id: "ja-v-c3", word: "メニュー", translation: "Menu", pronunciation: "meh-nyoo" },
+    ],
+    phrases: [
+      { id: "ja-p-c1", phrase: "コーヒーを二つください", translation: "Two coffees, please", pronunciation: "koh-hee oh foo-tah-tsu koo-dah-sy-ee" },
+    ],
+    activities: [
+      { id: "ja-a-c1", type: "multipleChoice", instruction: "Translate 'コーヒー'", question: "コーヒー", correctAnswer: "Coffee", options: ["Coffee", "Cake", "Tea"], xp: 5 },
+    ],
+    goals: [
+      { id: "ja-g-c1", description: "Order coffee" },
+    ],
+  },
+
+  // ── ja-sushi ───────────────────────────────────────────────────────────
+  {
+    id: "ja-sushi",
+    unitId: "ja-food-1",
+    languageCode: "ja",
+    title: "At the Sushi Bar",
+    description: "Learn names of popular sushi items and how to order.",
+    icon: "🍣",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 25,
+    vocabulary: [
+      { id: "ja-v-s1", word: "すし", translation: "Sushi", pronunciation: "soo-shee" },
+      { id: "ja-v-s2", word: "わさび", translation: "Wasabi", pronunciation: "wah-sah-bee" },
+      { id: "ja-v-s3", word: "お会計", translation: "The bill", pronunciation: "oh-kye-kay" },
+    ],
+    phrases: [
+      { id: "ja-p-s1", phrase: "わさびは抜きでお願いします", translation: "Without wasabi, please", pronunciation: "wah-sah-bee wah noo-kee deh oh-neh-guy-shee-mas" },
+    ],
+    activities: [
+      { id: "ja-a-s1", type: "multipleChoice", instruction: "Translate 'すし'", question: "すし", correctAnswer: "Sushi", options: ["Sushi", "Wasabi", "Bill"], xp: 5 },
+    ],
+    goals: [
+      { id: "ja-g-s1", description: "Order sushi without wasabi" },
+    ],
   },
 
   // ══════════════════════════════════════════════════════════════════════════
   // GERMAN
   // ══════════════════════════════════════════════════════════════════════════
 
+  // ── de-greetings ───────────────────────────────────────────────────────
   {
     id: "de-greetings",
     unitId: "de-basics-1",
     languageCode: "de",
     title: "Greetings",
     description: "Say hello and goodbye in German.",
-    icon: "🍺",
+    icon: "👋",
     difficulty: "beginner",
     estimatedMinutes: 5,
     xpReward: 20,
@@ -360,24 +576,522 @@ export const lessons: Lesson[] = [
     ],
     phrases: [
       { id: "de-p1", phrase: "Wie geht es Ihnen?", translation: "How are you? (formal)", pronunciation: "vee gayt es EE-nen", context: "Formal greeting" },
-      { id: "de-p2", phrase: "Ich heiße...", translation: "My name is...", pronunciation: "ikh HY-suh", context: "Self-introduction" },
     ],
     activities: [
       { id: "de-a1", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'Hallo' mean?", correctAnswer: "Hello", options: ["Hello", "Goodbye", "Thank you", "Please"], xp: 5 },
-      { id: "de-a2", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'Danke' mean?", correctAnswer: "Thank you", options: ["Sorry", "Thank you", "Hello", "Goodbye"], xp: 5 },
-      { id: "de-a3", type: "fillInTheBlank", instruction: "Complete the phrase", question: "Guten _____ (Good morning)", correctAnswer: "Morgen", xp: 5 },
-      { id: "de-a4", type: "translate", instruction: "Translate to German", question: "Please", correctAnswer: "Bitte", xp: 5 },
     ],
     goals: [
-      { id: "de-g1", description: "Learn 5 German greetings" },
-      { id: "de-g2", description: "Complete all activities" },
+      { id: "de-g1", description: "Learn basic German greetings" },
     ],
-    aiTeacherPrompt: {
-      systemPrompt: "You are Hans, an enthusiastic German teacher. Teach basic greetings and polite expressions. Be encouraging and patient.",
-      greeting: "Hallo! I'm Hans. Let's learn German greetings!",
-      focusTopics: ["greetings", "polite expressions", "pronunciation"],
-      targetLanguage: "de",
-    },
+  },
+
+  // ── de-introductions ───────────────────────────────────────────────────
+  {
+    id: "de-introductions",
+    unitId: "de-basics-1",
+    languageCode: "de",
+    title: "Introductions",
+    description: "Introduce yourself in German.",
+    icon: "🤝",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "de-v6", word: "Ich", translation: "I", pronunciation: "ikh" },
+      { id: "de-v7", word: "Heiße", translation: "Am named", pronunciation: "HY-suh" },
+      { id: "de-v8", word: "Name", translation: "Name", pronunciation: "NAH-muh" },
+    ],
+    phrases: [
+      { id: "de-p2", phrase: "Ich heiße John", translation: "My name is John", pronunciation: "ikh hy-suh John" },
+    ],
+    activities: [
+      { id: "de-a2", type: "multipleChoice", instruction: "Translate 'Ich'", question: "Ich", correctAnswer: "I", options: ["I", "You", "He"], xp: 5 },
+    ],
+    goals: [
+      { id: "de-g2", description: "Introduce yourself" },
+    ],
+  },
+
+  // ── de-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "de-numbers",
+    unitId: "de-basics-1",
+    languageCode: "de",
+    title: "Numbers 1-10",
+    description: "Count from one to ten in German.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "de-v-n1", word: "Eins", translation: "One", pronunciation: "yns" },
+      { id: "de-v-n2", word: "Zwei", translation: "Two", pronunciation: "tsvy" },
+      { id: "de-v-n3", word: "Drei", translation: "Three", pronunciation: "dry" },
+      { id: "de-v-n4", word: "Vier", translation: "Four", pronunciation: "feer" },
+      { id: "de-v-n5", word: "Fünf", translation: "Five", pronunciation: "fewnf" },
+    ],
+    phrases: [
+      { id: "de-p-n1", phrase: "Ich habe zwei Hunde", translation: "I have two dogs", pronunciation: "ikh HAH-buh tsvy HOON-duh" },
+    ],
+    activities: [
+      { id: "de-a-n1", type: "multipleChoice", instruction: "Translate 'Drei'", question: "Drei", correctAnswer: "Three", options: ["One", "Three", "Five"], xp: 5 },
+    ],
+    goals: [
+      { id: "de-g-n1", description: "Count to 5 in German" },
+    ],
+  },
+
+  // ── de-food-basics ─────────────────────────────────────────────────────
+  {
+    id: "de-food-basics",
+    unitId: "de-food-1",
+    languageCode: "de",
+    title: "Food Basics",
+    description: "Learn everyday German food terms.",
+    icon: "🍽️",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "de-v-f1", word: "Wasser", translation: "Water", pronunciation: "VAHS-er" },
+      { id: "de-v-f2", word: "Brot", translation: "Bread", pronunciation: "broht" },
+      { id: "de-v-f3", word: "Apfel", translation: "Apple", pronunciation: "AHP-fel" },
+    ],
+    phrases: [
+      { id: "de-p-f1", phrase: "Brot und Wasser", translation: "Bread and water", pronunciation: "broht oont VAHS-er" },
+    ],
+    activities: [
+      { id: "de-a-f1", type: "multipleChoice", instruction: "Translate 'Brot'", question: "Brot", correctAnswer: "Bread", options: ["Bread", "Apple", "Water"], xp: 5 },
+    ],
+    goals: [
+      { id: "de-g-f1", description: "Learn basic foods" },
+    ],
+  },
+
+  // ── de-at-cafe ─────────────────────────────────────────────────────────
+  {
+    id: "de-at-cafe",
+    unitId: "de-food-1",
+    languageCode: "de",
+    title: "At the Café",
+    description: "Order coffee and German pastries.",
+    icon: "☕",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "de-v-c1", word: "Kaffee", translation: "Coffee", pronunciation: "KAH-fay" },
+      { id: "de-v-c2", word: "Kuchen", translation: "Cake", pronunciation: "KOO-khen" },
+      { id: "de-v-c3", word: "Milch", translation: "Milk", pronunciation: "milkh" },
+    ],
+    phrases: [
+      { id: "de-p-c1", phrase: "Einen Kaffee bitte", translation: "A coffee please", pronunciation: "EYE-nen KAH-fay BIT-uh" },
+    ],
+    activities: [
+      { id: "de-a-c1", type: "multipleChoice", instruction: "Translate 'Kaffee'", question: "Kaffee", correctAnswer: "Coffee", options: ["Coffee", "Tea", "Cake"], xp: 5 },
+    ],
+    goals: [
+      { id: "de-g-c1", description: "Order coffee in German" },
+    ],
+  },
+
+  // ── de-restaurant ──────────────────────────────────────────────────────
+  {
+    id: "de-restaurant",
+    unitId: "de-food-1",
+    languageCode: "de",
+    title: "At the Restaurant",
+    description: "Request the menu and pay the bill.",
+    icon: "🍻",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 25,
+    vocabulary: [
+      { id: "de-v-r1", word: "Bier", translation: "Beer", pronunciation: "beer" },
+      { id: "de-v-r2", word: "Speisekarte", translation: "Menu", pronunciation: "SHPY-zuh-kar-tuh" },
+      { id: "de-v-r3", word: "Rechnung", translation: "Bill / Check", pronunciation: "REKH-noong" },
+    ],
+    phrases: [
+      { id: "de-p-r1", phrase: "Die Rechnung bitte", translation: "The bill please", pronunciation: "dee REKH-noong BIT-uh" },
+    ],
+    activities: [
+      { id: "de-a-r1", type: "multipleChoice", instruction: "Translate 'Bier'", question: "Bier", correctAnswer: "Beer", options: ["Beer", "Water", "Wine"], xp: 5 },
+    ],
+    goals: [
+      { id: "de-g-r1", description: "Ask for the bill" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // KOREAN
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // ── ko-greetings ───────────────────────────────────────────────────────
+  {
+    id: "ko-greetings",
+    unitId: "ko-basics-1",
+    languageCode: "ko",
+    title: "Greetings",
+    description: "Say hello and thank you in Korean.",
+    icon: "👋",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ko-v1", word: "안녕하세요", translation: "Hello / How are you?", pronunciation: "an-nyeong-ha-se-yo" },
+      { id: "ko-v2", word: "감사합니다", translation: "Thank you", pronunciation: "gam-sa-ham-ni-da" },
+      { id: "ko-v3", word: "네", translation: "Yes", pronunciation: "ne" },
+      { id: "ko-v4", word: "아니요", translation: "No", pronunciation: "a-ni-yo" },
+      { id: "ko-v5", word: "잘 가요", translation: "Goodbye", pronunciation: "jal ga-yo" },
+    ],
+    phrases: [
+      { id: "ko-p1", phrase: "만나서 반갑습니다", translation: "Nice to meet you", pronunciation: "man-na-seo ban-gap-seum-ni-da" },
+    ],
+    activities: [
+      { id: "ko-a1", type: "multipleChoice", instruction: "Translate '안녕하세요'", question: "안녕하세요", correctAnswer: "Hello / How are you?", options: ["Hello / How are you?", "Thank you", "Goodbye"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g1", description: "Learn 5 basic greetings" },
+    ],
+  },
+
+  // ── ko-introductions ───────────────────────────────────────────────────
+  {
+    id: "ko-introductions",
+    unitId: "ko-basics-1",
+    languageCode: "ko",
+    title: "Introductions",
+    description: "Say your name and nationality.",
+    icon: "🤝",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ko-v6", word: "저", translation: "I / Me (polite)", pronunciation: "jeo" },
+      { id: "ko-v7", word: "이름", translation: "Name", pronunciation: "i-reum" },
+      { id: "ko-v8", word: "사람", translation: "Person / Nationality", pronunciation: "sa-ram" },
+    ],
+    phrases: [
+      { id: "ko-p2", phrase: "제 이름은... 입니다", translation: "My name is...", pronunciation: "je i-reum-eun ... im-ni-da" },
+    ],
+    activities: [
+      { id: "ko-a2", type: "multipleChoice", instruction: "Translate '이름'", question: "이름", correctAnswer: "Name", options: ["Name", "I", "Friend"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g2", description: "Introduce yourself in Korean" },
+    ],
+  },
+
+  // ── ko-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "ko-numbers",
+    unitId: "ko-basics-1",
+    languageCode: "ko",
+    title: "Numbers 1-10",
+    description: "Learn Native Korean numbers.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ko-v-n1", word: "하나", translation: "One", pronunciation: "ha-na" },
+      { id: "ko-v-n2", word: "둘", translation: "Two", pronunciation: "dul" },
+      { id: "ko-v-n3", word: "셋", translation: "Three", pronunciation: "set" },
+      { id: "ko-v-n4", word: "넷", translation: "Four", pronunciation: "net" },
+      { id: "ko-v-n5", word: "다섯", translation: "Five", pronunciation: "da-seot" },
+    ],
+    phrases: [
+      { id: "ko-p-n1", phrase: "커피 한 잔", translation: "One cup of coffee", pronunciation: "keo-pi han jan" },
+    ],
+    activities: [
+      { id: "ko-a-n1", type: "multipleChoice", instruction: "Translate '셋'", question: "셋", correctAnswer: "Three", options: ["One", "Three", "Five"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g-n1", description: "Count to 5 in Korean" },
+    ],
+  },
+
+  // ── ko-food-basics ─────────────────────────────────────────────────────
+  {
+    id: "ko-food-basics",
+    unitId: "ko-food-1",
+    languageCode: "ko",
+    title: "Food Basics",
+    description: "Common foods in South Korea.",
+    icon: "🍽️",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ko-v-f1", word: "물", translation: "Water", pronunciation: "mul" },
+      { id: "ko-v-f2", word: "밥", translation: "Rice / Meal", pronunciation: "bap" },
+      { id: "ko-v-f3", word: "김치", translation: "Kimchi", pronunciation: "gim-chi" },
+    ],
+    phrases: [
+      { id: "ko-p-f1", phrase: "물 좀 주세요", translation: "Please give me some water", pronunciation: "mul jom ju-se-yo" },
+    ],
+    activities: [
+      { id: "ko-a-f1", type: "multipleChoice", instruction: "Translate '밥'", question: "밥", correctAnswer: "Rice / Meal", options: ["Rice / Meal", "Water", "Kimchi"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g-f1", description: "Ask for water politely" },
+    ],
+  },
+
+  // ── ko-at-cafe ─────────────────────────────────────────────────────────
+  {
+    id: "ko-at-cafe",
+    unitId: "ko-food-1",
+    languageCode: "ko",
+    title: "At the Café",
+    description: "Order iced americano and sweets.",
+    icon: "☕",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "ko-v-c1", word: "커피", translation: "Coffee", pronunciation: "keo-pi" },
+      { id: "ko-v-c2", word: "차", translation: "Tea", pronunciation: "cha" },
+      { id: "ko-v-c3", word: "아이스 아메리카노", translation: "Iced Americano", pronunciation: "a-i-seu a-me-ri-ka-no" },
+    ],
+    phrases: [
+      { id: "ko-p-c1", phrase: "아아 한 잔 주세요", translation: "One Iced Americano, please", pronunciation: "a-a han jan ju-se-yo" },
+    ],
+    activities: [
+      { id: "ko-a-c1", type: "multipleChoice", instruction: "Translate '커피'", question: "커피", correctAnswer: "Coffee", options: ["Coffee", "Tea", "Water"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g-c1", description: "Order Iced Americano" },
+    ],
+  },
+
+  // ── ko-kbbq ────────────────────────────────────────────────────────────
+  {
+    id: "ko-kbbq",
+    unitId: "ko-food-1",
+    languageCode: "ko",
+    title: "At the K-BBQ",
+    description: "Order delicious grilled meats.",
+    icon: "🥩",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 25,
+    vocabulary: [
+      { id: "ko-v-s1", word: "고기", translation: "Meat", pronunciation: "go-gi" },
+      { id: "ko-v-s2", word: "삼겹살", translation: "Pork belly", pronunciation: "sam-gyeop-sal" },
+      { id: "ko-v-s3", word: "소주", translation: "Soju", pronunciation: "so-ju" },
+    ],
+    phrases: [
+      { id: "ko-p-s1", phrase: "삼겹살 2인분 주세요", translation: "Two portions of pork belly, please", pronunciation: "sam-gyeop-sal i-in-bun ju-se-yo" },
+    ],
+    activities: [
+      { id: "ko-a-s1", type: "multipleChoice", instruction: "Translate '고기'", question: "고기", correctAnswer: "Meat", options: ["Meat", "Rice", "Soju"], xp: 5 },
+    ],
+    goals: [
+      { id: "ko-g-s1", description: "Order K-BBQ meat" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // CHINESE
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // ── zh-greetings ───────────────────────────────────────────────────────
+  {
+    id: "zh-greetings",
+    unitId: "zh-basics-1",
+    languageCode: "zh",
+    title: "Greetings",
+    description: "Say hello and goodbye in Mandarin.",
+    icon: "👋",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "zh-v1", word: "你好", translation: "Hello", pronunciation: "nǐ hǎo" },
+      { id: "zh-v2", word: "再见", translation: "Goodbye", pronunciation: "zài jiàn" },
+      { id: "zh-v3", word: "谢谢", translation: "Thank you", pronunciation: "xièxie" },
+      { id: "zh-v4", word: "不客气", translation: "You're welcome", pronunciation: "bú kèqi" },
+      { id: "zh-v5", word: "请", translation: "Please", pronunciation: "qǐng" },
+    ],
+    phrases: [
+      { id: "zh-p1", phrase: "你好吗？", translation: "How are you?", pronunciation: "nǐ hǎo ma" },
+    ],
+    activities: [
+      { id: "zh-a1", type: "multipleChoice", instruction: "Translate '你好'", question: "你好", correctAnswer: "Hello", options: ["Hello", "Goodbye", "Thank you"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g1", description: "Learn 5 basic Chinese greetings" },
+    ],
+  },
+
+  // ── zh-introductions ───────────────────────────────────────────────────
+  {
+    id: "zh-introductions",
+    unitId: "zh-basics-1",
+    languageCode: "zh",
+    title: "Introductions",
+    description: "Say your name and ask someone's name.",
+    icon: "🤝",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "zh-v6", word: "我", translation: "I / Me", pronunciation: "wǒ" },
+      { id: "zh-v7", word: "叫", translation: "Call / Named", pronunciation: "jiào" },
+      { id: "zh-v8", word: "名字", translation: "Name", pronunciation: "míngzi" },
+    ],
+    phrases: [
+      { id: "zh-p2", phrase: "我叫李明", translation: "My name is Li Ming", pronunciation: "wǒ jiào lǐ míng" },
+    ],
+    activities: [
+      { id: "zh-a2", type: "multipleChoice", instruction: "Translate '我'", question: "我", correctAnswer: "I / Me", options: ["I / Me", "You", "He"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g2", description: "Introduce yourself in Chinese" },
+    ],
+  },
+
+  // ── zh-numbers ─────────────────────────────────────────────────────────
+  {
+    id: "zh-numbers",
+    unitId: "zh-basics-1",
+    languageCode: "zh",
+    title: "Numbers 1-10",
+    description: "Learn to count in Mandarin Chinese.",
+    icon: "🔢",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "zh-v-n1", word: "一", translation: "One", pronunciation: "yī" },
+      { id: "zh-v-n2", word: "二", translation: "Two", pronunciation: "èr" },
+      { id: "zh-v-n3", word: "三", translation: "Three", pronunciation: "sān" },
+      { id: "zh-v-n4", word: "四", translation: "Four", pronunciation: "sì" },
+      { id: "zh-v-n5", word: "五", translation: "Five", pronunciation: "wǔ" },
+    ],
+    phrases: [
+      { id: "zh-p-n1", phrase: "三个苹果", translation: "Three apples", pronunciation: "sān gè píngguǒ" },
+    ],
+    activities: [
+      { id: "zh-a-n1", type: "multipleChoice", instruction: "Translate '三'", question: "三", correctAnswer: "Three", options: ["One", "Three", "Five"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g-n1", description: "Count 1 to 5 in Mandarin" },
+    ],
+  },
+
+  // ── zh-food-basics ─────────────────────────────────────────────────────
+  {
+    id: "zh-food-basics",
+    unitId: "zh-food-1",
+    languageCode: "zh",
+    title: "Food Basics",
+    description: "Learn Chinese food and drink terms.",
+    icon: "🍽️",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "zh-v-f1", word: "水", translation: "Water", pronunciation: "shuǐ" },
+      { id: "zh-v-f2", word: "米饭", translation: "Rice", pronunciation: "mǐfàn" },
+      { id: "zh-v-f3", word: "茶", translation: "Tea", pronunciation: "chá" },
+    ],
+    phrases: [
+      { id: "zh-p-f1", phrase: "我要喝水", translation: "I want to drink water", pronunciation: "wǒ yào hē shuǐ" },
+    ],
+    activities: [
+      { id: "zh-a-f1", type: "multipleChoice", instruction: "Translate '茶'", question: "茶", correctAnswer: "Tea", options: ["Water", "Rice", "Tea"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g-f1", description: "Learn water and tea in Chinese" },
+    ],
+  },
+
+  // ── zh-at-cafe ─────────────────────────────────────────────────────────
+  {
+    id: "zh-at-cafe",
+    unitId: "zh-food-1",
+    languageCode: "zh",
+    title: "At the Café",
+    description: "Order coffee and pastries in Chinese.",
+    icon: "☕",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "zh-v-c1", word: "咖啡", translation: "Coffee", pronunciation: "kāfēi" },
+      { id: "zh-v-c2", word: "蛋糕", translation: "Cake", pronunciation: "dàngāo" },
+      { id: "zh-v-c3", word: "冰水", translation: "Ice water", pronunciation: "bīngshuǐ" },
+    ],
+    phrases: [
+      { id: "zh-p-c1", phrase: "一杯咖啡，谢谢", translation: "A cup of coffee, thank you", pronunciation: "yī bēi kāfēi, xièxie" },
+    ],
+    activities: [
+      { id: "zh-a-c1", type: "multipleChoice", instruction: "Translate '咖啡'", question: "咖啡", correctAnswer: "Coffee", options: ["Coffee", "Tea", "Cake"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g-c1", description: "Order coffee in Mandarin" },
+    ],
+  },
+
+  // ── zh-restaurant ──────────────────────────────────────────────────────
+  {
+    id: "zh-restaurant",
+    unitId: "zh-food-1",
+    languageCode: "zh",
+    title: "At the Restaurant",
+    description: "Request the menu and order delicious dumplings.",
+    icon: "🥟",
+    difficulty: "beginner",
+    estimatedMinutes: 6,
+    xpReward: 25,
+    vocabulary: [
+      { id: "zh-v-r1", word: "饺子", translation: "Dumplings", pronunciation: "jiǎozi" },
+      { id: "zh-v-r2", word: "菜单", translation: "Menu", pronunciation: "càidān" },
+      { id: "zh-v-r3", word: "买单", translation: "The bill", pronunciation: "mǎidān" },
+    ],
+    phrases: [
+      { id: "zh-p-r1", phrase: "服务员，买单", translation: "Waiter, bill please", pronunciation: "fúwùyuán, mǎidān" },
+    ],
+    activities: [
+      { id: "zh-a-r1", type: "multipleChoice", instruction: "Translate '饺子'", question: "饺子", correctAnswer: "Dumplings", options: ["Dumplings", "Menu", "Bill"], xp: 5 },
+    ],
+    goals: [
+      { id: "zh-g-r1", description: "Order dumplings" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // HINDI
+  // ══════════════════════════════════════════════════════════════════════════
+  {
+    id: "hi-greetings",
+    unitId: "hi-basics-1",
+    languageCode: "hi",
+    title: "Greetings",
+    description: "Basic Hindi greetings and polite words.",
+    icon: "👋",
+    difficulty: "beginner",
+    estimatedMinutes: 5,
+    xpReward: 20,
+    vocabulary: [
+      { id: "hi-v1", word: "नमस्ते", translation: "Hello / Greetings", pronunciation: "nuh-MUS-tay" },
+      { id: "hi-v2", word: "धन्यवाद", translation: "Thank you", pronunciation: "dhun-yuh-VAHD" },
+      { id: "hi-v3", word: "हाँ", translation: "Yes", pronunciation: "haan" },
+      { id: "hi-v4", word: "नहीं", translation: "No", pronunciation: "nuh-HEEN" },
+      { id: "hi-v5", word: "कृपया", translation: "Please", pronunciation: "KRIP-yah" },
+    ],
+    phrases: [
+      { id: "hi-p1", phrase: "आप कैसे हैं?", translation: "How are you? (formal)", pronunciation: "aap KAI-say HAIN", context: "Formal greeting" },
+      { id: "hi-p2", phrase: "मेरा नाम... है", translation: "My name is...", pronunciation: "MEH-rah naam ... hai", context: "Self-introduction" },
+    ],
+    activities: [
+      { id: "hi-a1", type: "multipleChoice", instruction: "Choose the correct translation", question: "What does 'नमस्ते' mean?", correctAnswer: "Hello / Greetings", options: ["Hello / Greetings", "Goodbye", "Thank you", "Sorry"], xp: 5 },
+    ],
+    goals: [
+      { id: "hi-g1", description: "Learn 5 Hindi greetings" },
+    ],
   },
 ];
 
