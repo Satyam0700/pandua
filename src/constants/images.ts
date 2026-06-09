@@ -5,6 +5,8 @@ import streakFire from "../../assets/images/streak-fire.png";
 import earth from "../../assets/images/earth.png";
 import palace from "../../assets/images/palace.png";
 import treasure from "../../assets/images/treasure.png";
+import cafeMascot from "../../assets/images/cafe-mascot.png";
+import cafeTable from "../../assets/images/cafe-table.png";
 
 export const images = {
   mascotAuth,
@@ -14,5 +16,8 @@ export const images = {
   earth,
   palace,
   treasure,
+  cafeMascot,
+  cafeTable,
 };
+
 
